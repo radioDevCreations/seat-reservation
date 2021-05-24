@@ -15,5 +15,6 @@
   "homepage": "https://bitbucket.org/xkom/zadanie_rekrutacyjne#readme",
   "devDependencies": {
     "json-server": "^0.16.3"
-  }
+  },
+  "dependencies": {}
 }
