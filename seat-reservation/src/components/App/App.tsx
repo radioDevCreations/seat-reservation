@@ -57,7 +57,7 @@ const App: FC = () => {
     fetch('http://localhost:3000/seats')
     .then(response => response.json())
     .then(data =>  dispatch(setSeatsData(data)))
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <InnerWrapper>

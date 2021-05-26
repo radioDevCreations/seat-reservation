@@ -11,7 +11,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import { useHistory } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hooks/hooks";
+import { useAppDispatch, useLogger } from "../../../redux/hooks/hooks";
 import { setQuestionnaireSubmitData } from "../../../redux/actions/questionnaireActions";
 import { Colors } from "../../../styledHelpers/Colors";
 
@@ -48,6 +48,9 @@ const QuestionnairePage: FC = () => {
   const history = useHistory();
   const [isNextTo, setIsNextTo] = useState(false);
   const [howManySeats, setHowManySeats] = useState(1);
+  const logger = useLogger(
+    `Aby zarezerwować więcej niż 10 miejsc jednocześnie skontaktuj się z działem administracji.`
+  );
 
   const handleRadioChange = () => {
     setIsNextTo(!isNextTo);
@@ -65,8 +68,10 @@ const QuestionnairePage: FC = () => {
   };
 
   const handleHowManySeatsChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (+event.target.value > 10) setHowManySeats(10);
-    else if (+event.target.value < 0) setHowManySeats(0);
+    if (+event.target.value > 10) {
+      setHowManySeats(10);
+      logger();
+    } else if (+event.target.value < 0) setHowManySeats(0);
     else setHowManySeats(+event.target.value);
   };
 

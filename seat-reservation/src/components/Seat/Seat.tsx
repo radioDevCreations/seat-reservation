@@ -4,7 +4,7 @@ import {
   addChosenSeat,
   removeChosenSeat,
 } from "../../redux/actions/reservationActions";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
+import { useAppDispatch, useAppSelector, useLogger } from "../../redux/hooks/hooks";
 import { Colors } from "../../styledHelpers/Colors";
 import { fontSize } from "../../styledHelpers/fontSize";
 import { cannotSelect } from "../../styledHelpers/styledFunctions";
@@ -43,6 +43,7 @@ const Seat: FC<SeatProps> = ({ id, reserved }) => {
     return { chosen };
   });
   const dispatch = useAppDispatch();
+  const logger = useLogger(`Aby zarezerwować więcej niż 10 miejsc jednocześnie skontaktuj się z działem administracji.`);
   const isChosen = state.chosen.includes(id);
   const handleSeatClick = () => {
     if (!reserved) {
@@ -50,6 +51,8 @@ const Seat: FC<SeatProps> = ({ id, reserved }) => {
         dispatch(removeChosenSeat(id));
       } else if (!isChosen && state.chosen.length < 10) {
         dispatch(addChosenSeat(id));
+      } else {
+        logger();
       }
     }
   };

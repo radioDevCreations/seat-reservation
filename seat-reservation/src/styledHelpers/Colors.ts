@@ -7,6 +7,8 @@ export const Colors = {
     lightgray: '#ccc',
     white: '#fff',
 
+    warn: '#f00',
+
     seatHover: '#e6a7bc',
 
 }

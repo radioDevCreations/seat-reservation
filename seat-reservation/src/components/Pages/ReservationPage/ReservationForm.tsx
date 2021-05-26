@@ -2,7 +2,7 @@ import { FC, FormEvent } from "react";
 import { useHistory } from "react-router-dom";
 import { setReservationSeats } from "../../../redux/actions/appActions";
 import {setReservationSubmitData } from "../../../redux/actions/reservationActions";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
+import { useAppDispatch, useAppSelector, useLogger } from "../../../redux/hooks/hooks";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 import { Colors } from "../../../styledHelpers/Colors";
@@ -51,6 +51,7 @@ const ReservationForm: FC = () => {
     const chosen = state.reservation.chosenSeats;
     return { chosen };
   });
+  const logger = useLogger(`Wybierz przynajmnie 1 miejsce do zarezerwowania.`);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -62,6 +63,8 @@ const ReservationForm: FC = () => {
         }));
         dispatch(setReservationSeats(state.chosen));
       history.push("/resume");
+    } else {
+      logger();
     }
   };
 
