@@ -1,8 +1,12 @@
 import { FC, FormEvent } from "react";
 import { useHistory } from "react-router-dom";
 import { setReservationSeats } from "../../../redux/actions/appActions";
-import {setReservationSubmitData } from "../../../redux/actions/reservationActions";
-import { useAppDispatch, useAppSelector, useLogger } from "../../../redux/hooks/hooks";
+import { setReservationSubmitData } from "../../../redux/actions/reservationActions";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useLogger,
+} from "../../../redux/hooks/hooks";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 import { Colors } from "../../../styledHelpers/Colors";
@@ -33,15 +37,15 @@ const LegendItem = styled.div`
   width: 200px;
 `;
 const LegendLabel = styled.div`
-padding-right: 16px;
+  padding-right: 16px;
 `;
 const LegendTag = styled.div<{ innerColor: string }>`
-width: 24px;
-height: 24px;
-border-radius: 200px;
-border: 1px solid ${Colors.black};
-content: '';
-background-color: ${props => props.innerColor};
+  width: 24px;
+  height: 24px;
+  border-radius: 200px;
+  border: 1px solid ${Colors.black};
+  content: "";
+  background-color: ${(props) => props.innerColor};
 `;
 
 const ReservationForm: FC = () => {
@@ -60,8 +64,9 @@ const ReservationForm: FC = () => {
         setReservationSubmitData({
           reservation: state.chosen,
           isSubmitted: true,
-        }));
-        dispatch(setReservationSeats(state.chosen));
+        })
+      );
+      dispatch(setReservationSeats(state.chosen));
       history.push("/resume");
     } else {
       logger();
@@ -76,15 +81,15 @@ const ReservationForm: FC = () => {
       <Legend>
         <LegendItem>
           <LegendLabel>wybrano</LegendLabel>
-          <LegendTag innerColor = "#ee0e59"></LegendTag>
+          <LegendTag innerColor="#ee0e59"></LegendTag>
         </LegendItem>
         <LegendItem>
           <LegendLabel>zarezerwowane</LegendLabel>
-          <LegendTag innerColor = "#888"></LegendTag>
+          <LegendTag innerColor="#888"></LegendTag>
         </LegendItem>
         <LegendItem>
           <LegendLabel>wolne</LegendLabel>
-          <LegendTag innerColor = "#fff"></LegendTag>
+          <LegendTag innerColor="#fff"></LegendTag>
         </LegendItem>
       </Legend>
     </InnerWrapper>

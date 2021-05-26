@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import styled from "styled-components";
-import { Switch, Route, Redirect} from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.scss";
 
 import QuestionnairePage from "../Pages/QuestionnairePage/QuestionnairePage";
@@ -49,23 +49,29 @@ const App: FC = () => {
     const loggerText = state.app.logger.loggerText;
     const logger = state.app.logger.logger;
 
-    return { isQuestionnarySubmitted, isReservationSubmitted, loggerText, logger };
+    return {
+      isQuestionnarySubmitted,
+      isReservationSubmitted,
+      loggerText,
+      logger,
+    };
   });
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetch('http://localhost:3000/seats')
-    .then(response => response.json())
-    .then(data =>  dispatch(setSeatsData(data)))
+    fetch("http://localhost:3000/seats")
+      .then((response) => response.json())
+      .then((data) => dispatch(setSeatsData(data)));
   }, [dispatch]);
 
   return (
     <InnerWrapper>
       <ReservationHeader>
-        <ReservationHeaderTitle>
-          Rezerwacja miejsc
-        </ReservationHeaderTitle>
-        <ReservationLogger loggerText = {state.loggerText} logger = {state.logger}/>
+        <ReservationHeaderTitle>Rezerwacja miejsc</ReservationHeaderTitle>
+        <ReservationLogger
+          loggerText={state.loggerText}
+          logger={state.logger}
+        />
       </ReservationHeader>
 
       <Switch>

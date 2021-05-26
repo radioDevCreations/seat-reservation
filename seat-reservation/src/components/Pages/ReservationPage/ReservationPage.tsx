@@ -2,7 +2,11 @@ import { FC, useEffect } from "react";
 import styled from "styled-components";
 import { setChosenSeats } from "../../../redux/actions/reservationActions";
 import { setQuestionnaireSubmitData } from "../../../redux/actions/questionnaireActions";
-import { useAppDispatch, useAppSelector, useLogger } from "../../../redux/hooks/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useLogger,
+} from "../../../redux/hooks/hooks";
 import { fontSize } from "../../../styledHelpers/fontSize";
 import Row from "../../Row/Row";
 import ReservationForm from "./ReservationForm";
@@ -41,7 +45,9 @@ const ReservationPage: FC = () => {
     const questionnaireIsNextTo = state.questionnaire.isNextTo;
     return { seats, questionnaireHowManySeats, questionnaireIsNextTo };
   });
-  const logger = useLogger(`W tym momencie nie ma na sali ${state.questionnaireHowManySeats} wolnych miejsc obok siebie.`);
+  const logger = useLogger(
+    `W tym momencie nie ma na sali ${state.questionnaireHowManySeats} wolnych miejsc obok siebie.`
+  );
 
   useEffect(() => {
     const newChosen: string[] = [];
@@ -92,7 +98,7 @@ const ReservationPage: FC = () => {
         console.warn("Coś poszło nie tak!");
         break;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     dispatch,
     state.questionnaireHowManySeats,

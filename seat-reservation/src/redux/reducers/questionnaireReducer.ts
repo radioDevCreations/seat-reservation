@@ -21,9 +21,9 @@ export const questionnaireReducer = (
     case SET_QUESTIONNAIRE_SUBMIT_DATA:
       return {
         ...state,
-          isNextTo: action.payload.isNextTo,
-          howManySeats: action.payload.howManySeats,
-          isSubmitted: action.payload.isSubmitted,
+        isNextTo: action.payload.isNextTo,
+        howManySeats: action.payload.howManySeats,
+        isSubmitted: action.payload.isSubmitted,
       };
     default:
       return state;

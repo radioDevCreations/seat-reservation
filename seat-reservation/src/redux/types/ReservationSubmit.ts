@@ -1,4 +1,4 @@
 export type ReservationSubmit = {
-    reservation: string[],
-    isSubmitted: boolean
-}
+  reservation: string[];
+  isSubmitted: boolean;
+};

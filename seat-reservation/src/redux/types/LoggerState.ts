@@ -1,4 +1,4 @@
 export type LoggerState = {
-    logger: boolean,
-    loggerText: string
-}
+  logger: boolean;
+  loggerText: string;
+};

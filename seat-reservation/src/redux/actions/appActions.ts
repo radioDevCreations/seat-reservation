@@ -10,7 +10,6 @@ export const SET_SEATS_DATA = "SET_SEATS_DATA";
 export const SET_RESERVATION_SEATS = "SET_RESERVATION_SEATS";
 export const SET_LOGGER = "SET_LOGGER";
 
-
 export const setSeatsData = (
   data: SeatProps[]
 ): ActionSeatPropsArrayPayload => ({

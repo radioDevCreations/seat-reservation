@@ -4,7 +4,11 @@ import {
   addChosenSeat,
   removeChosenSeat,
 } from "../../redux/actions/reservationActions";
-import { useAppDispatch, useAppSelector, useLogger } from "../../redux/hooks/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useLogger,
+} from "../../redux/hooks/hooks";
 import { Colors } from "../../styledHelpers/Colors";
 import { fontSize } from "../../styledHelpers/fontSize";
 import { cannotSelect } from "../../styledHelpers/styledFunctions";
@@ -29,8 +33,10 @@ const InnerWrapper = styled.div<{ reserved: boolean; isChosen: boolean }>`
   }};
   ${cannotSelect()};
   cursor: pointer;
-  :hover{
-    background-color: ${(props) => {return props.reserved || props.isChosen?null:Colors.seatHover}};
+  :hover {
+    background-color: ${(props) => {
+      return props.reserved || props.isChosen ? null : Colors.seatHover;
+    }};
   }
 `;
 const Label = styled.span`
@@ -43,7 +49,9 @@ const Seat: FC<SeatProps> = ({ id, reserved }) => {
     return { chosen };
   });
   const dispatch = useAppDispatch();
-  const logger = useLogger(`Aby zarezerwować więcej niż 10 miejsc jednocześnie skontaktuj się z działem administracji.`);
+  const logger = useLogger(
+    `Aby zarezerwować więcej niż 10 miejsc jednocześnie skontaktuj się z działem administracji.`
+  );
   const isChosen = state.chosen.includes(id);
   const handleSeatClick = () => {
     if (!reserved) {
