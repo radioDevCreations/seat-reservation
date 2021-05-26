@@ -10,6 +10,7 @@ import ReservationLogger from "../ReservationLogger/ReservationLogger";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
 import { setSeatsData } from "../../redux/actions/appActions";
 import { fontSize } from "../../styledHelpers/fontSize";
+import { Colors } from "../../styledHelpers/Colors";
 
 const InnerWrapper = styled.div`
   font-family: "Source Sans Pro", sans-serif;
@@ -21,9 +22,9 @@ const InnerWrapper = styled.div`
 const ReservationHeader = styled.div`
   width: 100%;
   height: 60px;
-  border-bottom: 1px solid #ccc;
-  box-shadow: 1px 1px 6px -2px #000000;
-  background-color: #eee;
+  border-bottom: 1px solid ${Colors.lightgray};
+  box-shadow: 1px 1px 6px -2px ${Colors.black};
+  background-color: ${Colors.primary};
   z-index: 2;
 
   position: fixed;
@@ -36,15 +37,15 @@ const ReservationHeader = styled.div`
 const ReservationHeaderTitle = styled.div`
   padding-left: 20px;
   font-size: ${fontSize[20]};
-  color: #ee0e59;
+  color: ${Colors.secondary};
   text-transform: uppercase;
   font-weight: 600;
 `;
 
 const App: FC = () => {
   const state = useAppSelector((state) => {
-    const isQuestionnarySubmitted = state.app.isQuestionnaireSubmitted;
-    const isReservationSubmitted = state.app.isReservationSubmitted;
+    const isQuestionnarySubmitted = state.questionnaire.isSubmitted;
+    const isReservationSubmitted = state.reservation.isSubmitted;
     const loggerText = state.app.logger.loggerText;
     const logger = state.app.logger.logger;
 

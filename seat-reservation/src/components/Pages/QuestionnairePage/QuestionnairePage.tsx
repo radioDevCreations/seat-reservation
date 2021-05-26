@@ -12,7 +12,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import { useHistory } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hooks/hooks";
-import { setQuestionnaireSubmitData } from "../../../redux/actions/appActions";
+import { setQuestionnaireSubmitData } from "../../../redux/actions/questionnaireActions";
+import { Colors } from "../../../styledHelpers/Colors";
 
 const InnerWrapper = styled.div`
   display: flex;
@@ -29,10 +30,10 @@ const InnerWrapper = styled.div`
 const QuestionnaireForm = styled.form`
   width: 480px;
   height: 380px;
-  border: 1px solid #ccc;
+  border: 1px solid ${Colors.lightgray};
   border-radius: 5px;
-  box-shadow: 1px 1px 6px -2px #000000;
-  background-color: #eee;
+  box-shadow: 1px 1px 6px -2px ${Colors.black};
+  background-color: ${Colors.primary};
 `;
 
 const Field = styled.div`
@@ -77,7 +78,7 @@ const QuestionnairePage: FC = () => {
             htmlFor="how-many"
             style={{
               paddingRight: "20px",
-              color: "#000",
+              color: Colors.black,
               fontWeight: 600,
             }}
           >
@@ -101,7 +102,7 @@ const QuestionnairePage: FC = () => {
             <FormLabel
               component="legend"
               style={{
-                color: "#000",
+                color: Colors.black,
                 fontWeight: 600,
                 marginBottom: "20px",
                 zIndex: 10,

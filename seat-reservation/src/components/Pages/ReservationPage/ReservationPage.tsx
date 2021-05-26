@@ -1,14 +1,13 @@
 import { FC, useEffect } from "react";
 import styled from "styled-components";
-import {
-  setChosenSeats,
-  setQuestionnaireSubmitData
-} from "../../../redux/actions/appActions";
+import { setChosenSeats } from "../../../redux/actions/reservationActions";
+import { setQuestionnaireSubmitData } from "../../../redux/actions/questionnaireActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
 import { fontSize } from "../../../styledHelpers/fontSize";
 import Row from "../../Row/Row";
-import ReservationForm from './ReservationForm';
+import ReservationForm from "./ReservationForm";
 import SeatProps from "../../Seat/SeatProps";
+import { Colors } from "../../../styledHelpers/Colors";
 
 const InnerWrapper = styled.div`
   display: flex;
@@ -27,10 +26,10 @@ const ReservationBoard = styled.div`
   position: relative;
   width: 90%;
   max-width: 1000px;
-  border: 1px solid #ccc;
+  border: 1px solid ${Colors.lightgray};
   border-radius: 5px;
-  box-shadow: 1px 1px 6px -2px #000000;
-  background-color: #eee;
+  box-shadow: 1px 1px 6px -2px ${Colors.black};
+  background-color: ${Colors.primary};
   padding: 20px;
 `;
 
@@ -38,40 +37,42 @@ const ReservationPage: FC = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => {
     const seats = state.app.seats;
-    const chosen = state.app.questionnaireState.howManySeats;
-    const questionnaireHowManySeats = state.app.questionnaireState.howManySeats;
-    const questionnaireIsNextTo = state.app.questionnaireState.isNextTo;
-    return { seats, chosen, questionnaireHowManySeats, questionnaireIsNextTo };
+    const questionnaireHowManySeats = state.questionnaire.howManySeats;
+    const questionnaireIsNextTo = state.questionnaire.isNextTo;
+    return { seats, questionnaireHowManySeats, questionnaireIsNextTo };
   });
 
   useEffect(() => {
     const newChosen: string[] = [];
     switch (state.questionnaireIsNextTo) {
       case true: //the seats are to be next to each other
-      try{
-        for (let i = 0; i < 10; i++) {
-          const seats = state.seats.filter(
-            (seat: SeatProps) => seat.cords.x === i
-          );
-          for (let i = 0; i < seats.length; i++) {
-            if (seats[i].reserved === false) {
-              newChosen.push(seats[i].id);
-              if (newChosen.length === state.questionnaireHowManySeats) break;
-            } else {
-              newChosen.length = 0;
+        try {
+          for (let i = 0; i < 10; i++) {
+            const seats = state.seats.filter(
+              (seat: SeatProps) => seat.cords.x === i
+            );
+            for (let i = 0; i < seats.length; i++) {
+              if (seats[i].reserved === false) {
+                newChosen.push(seats[i].id);
+                if (newChosen.length === state.questionnaireHowManySeats) break;
+              } else {
+                newChosen.length = 0;
+              }
             }
+            if (newChosen.length === state.questionnaireHowManySeats) {
+              dispatch(setChosenSeats(newChosen));
+              break;
+            }
+            newChosen.length = 0;
+            if (i === 9)
+              throw new Error(
+                `W tym momencie nie ma na sali ${state.questionnaireHowManySeats} wolnych miejsc obok siebie.`
+              );
           }
-          if (newChosen.length === state.questionnaireHowManySeats) {
-            dispatch(setChosenSeats(newChosen));
-            break;
-          }
-          newChosen.length = 0;
-          if (i===9) throw new Error(`W tym momencie nie ma na sali ${state.questionnaireHowManySeats} wolnych miejsc obok siebie.`);
+        } catch (error) {
+          console.log(error);
+          dispatch(setChosenSeats([]));
         }
-      } catch (error) {
-        console.log(error);
-        dispatch(setChosenSeats([]));
-      }
         break;
 
       case false: //the seats aren't to be next to each other

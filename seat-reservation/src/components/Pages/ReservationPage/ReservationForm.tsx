@@ -1,19 +1,21 @@
 import { FC, FormEvent } from "react";
 import { useHistory } from "react-router-dom";
-import { setReservationSeats, setReservationSubmitData } from "../../../redux/actions/appActions";
+import { setReservationSeats } from "../../../redux/actions/appActions";
+import {setReservationSubmitData } from "../../../redux/actions/reservationActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
+import { Colors } from "../../../styledHelpers/Colors";
 
 const InnerWrapper = styled.form`
   position: relative;
   top: 20px;
   width: 90%;
   max-width: 1000px;
-  border: 1px solid #ccc;
+  border: 1px solid ${Colors.lightgray};
   border-radius: 5px;
-  box-shadow: 1px 1px 6px -2px #000000;
-  background-color: #eee;
+  box-shadow: 1px 1px 6px -2px ${Colors.black};
+  background-color: ${Colors.primary};
   padding: 20px;
   display: flex;
 `;
@@ -37,7 +39,7 @@ const LegendTag = styled.div<{ innerColor: string }>`
 width: 24px;
 height: 24px;
 border-radius: 200px;
-border: 1px solid #000;
+border: 1px solid ${Colors.black};
 content: '';
 background-color: ${props => props.innerColor};
 `;
@@ -46,7 +48,7 @@ const ReservationForm: FC = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const state = useAppSelector((state) => {
-    const chosen = state.app.chosenSeats;
+    const chosen = state.reservation.chosenSeats;
     return { chosen };
   });
 

@@ -1,8 +1,9 @@
 import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { setReservationSubmitData } from "../../../redux/actions/appActions";
+import { setReservationSubmitData } from "../../../redux/actions/reservationActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
+import { Colors } from "../../../styledHelpers/Colors";
 import SeatProps from "../../Seat/SeatProps";
 
 const InnerWrapper = styled.div`
@@ -28,7 +29,7 @@ const ReservationMessage = styled.div`
 const ReturnLink = styled(Link)`
   text-decoration: none;
   text-transform: uppercase;
-  color: #ee0e59;
+  color: ${Colors.secondary};
 `;
 
 export interface ResumePageProps {}
@@ -36,7 +37,7 @@ export interface ResumePageProps {}
 const ResumePage: FC<ResumePageProps> = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => {
-    const reservation = state.app.reservationState;
+    const reservation = state.reservation.reservationState;
     const seats = state.app.seats;
     return { reservation, seats };
   });

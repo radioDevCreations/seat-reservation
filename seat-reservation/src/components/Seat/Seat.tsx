@@ -3,8 +3,9 @@ import styled from "styled-components";
 import {
   addChosenSeat,
   removeChosenSeat,
-} from "../../redux/actions/appActions";
+} from "../../redux/actions/reservationActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
+import { Colors } from "../../styledHelpers/Colors";
 import { fontSize } from "../../styledHelpers/fontSize";
 import { cannotSelect } from "../../styledHelpers/styledFunctions";
 import SeatProps from "./SeatProps";
@@ -13,23 +14,23 @@ const InnerWrapper = styled.div<{ reserved: boolean; isChosen: boolean }>`
   width: 40px;
   height: 40px;
   margin: 0 2px;
-  border: 1px solid black;
+  border: 1px solid ${Colors.black};
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${(props) => {
     if (props.reserved) {
-      return "#888";
+      return Colors.gray;
     } else if (props.isChosen) {
-      return "#ee0e59";
+      return Colors.secondary;
     } else {
-      return "#fff";
+      return Colors.white;
     }
   }};
   ${cannotSelect()};
   cursor: pointer;
   :hover{
-    background-color: ${(props) => {return props.reserved || props.isChosen?"":"#e6a7bc"}};
+    background-color: ${(props) => {return props.reserved || props.isChosen?null:Colors.seatHover}};
   }
 `;
 const Label = styled.span`
@@ -38,7 +39,7 @@ const Label = styled.span`
 
 const Seat: FC<SeatProps> = ({ id, reserved }) => {
   const state = useAppSelector((state) => {
-    const chosen = state.app.chosenSeats;
+    const chosen = state.reservation.chosenSeats;
     return { chosen };
   });
   const dispatch = useAppDispatch();
