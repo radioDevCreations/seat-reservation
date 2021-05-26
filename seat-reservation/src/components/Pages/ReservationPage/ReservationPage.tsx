@@ -1,13 +1,14 @@
-import { FC, FormEvent, useEffect } from "react";
+import { FC, useEffect } from "react";
 import styled from "styled-components";
-import { setQuestionnaireSubmitData, setReservationSubmitData } from "../../../redux/actions/appActions";
+import {
+  setChosenSeats,
+  setQuestionnaireSubmitData
+} from "../../../redux/actions/appActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
 import { fontSize } from "../../../styledHelpers/fontSize";
 import Row from "../../Row/Row";
+import ReservationForm from './ReservationForm';
 import SeatProps from "../../Seat/SeatProps";
-
-import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router-dom";
 
 const InnerWrapper = styled.div`
   display: flex;
@@ -22,32 +23,8 @@ const InnerWrapper = styled.div`
   font-size: ${fontSize[18]};
 `;
 
-const ReservationHeader = styled.div`
-  width: 100%;
-  height: 60px;
-  border-bottom: 1px solid #ccc;
-  box-shadow: 1px 1px 6px -2px #000000;
-  background-color: #eee;
-  z-index: 2;
-
-  position: fixed;
-  top: 0;
-  left: 0;
-`;
-
 const ReservationBoard = styled.div`
   position: relative;
-  width: 90%;
-  max-width: 1000px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 1px 1px 6px -2px #000000;
-  background-color: #eee;
-  padding: 20px;
-`;
-const ReservationForm = styled.form`
-  position: relative;
-  top: 20px;
   width: 90%;
   max-width: 1000px;
   border: 1px solid #ccc;
@@ -59,12 +36,66 @@ const ReservationForm = styled.form`
 
 const ReservationPage: FC = () => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
   const state = useAppSelector((state) => {
     const seats = state.app.seats;
-    const chosen = state.app.chosenSeats;
-    return { seats, chosen };
+    const chosen = state.app.questionnaireState.howManySeats;
+    const questionnaireHowManySeats = state.app.questionnaireState.howManySeats;
+    const questionnaireIsNextTo = state.app.questionnaireState.isNextTo;
+    return { seats, chosen, questionnaireHowManySeats, questionnaireIsNextTo };
   });
+
+  useEffect(() => {
+    const newChosen: string[] = [];
+    switch (state.questionnaireIsNextTo) {
+      case true: //the seats are to be next to each other
+      try{
+        for (let i = 0; i < 10; i++) {
+          const seats = state.seats.filter(
+            (seat: SeatProps) => seat.cords.x === i
+          );
+          for (let i = 0; i < seats.length; i++) {
+            if (seats[i].reserved === false) {
+              newChosen.push(seats[i].id);
+              if (newChosen.length === state.questionnaireHowManySeats) break;
+            } else {
+              newChosen.length = 0;
+            }
+          }
+          if (newChosen.length === state.questionnaireHowManySeats) {
+            dispatch(setChosenSeats(newChosen));
+            break;
+          }
+          newChosen.length = 0;
+          if (i===9) throw new Error(`W tym momencie nie ma na sali ${state.questionnaireHowManySeats} wolnych miejsc obok siebie.`);
+        }
+      } catch (error) {
+        console.log(error);
+        dispatch(setChosenSeats([]));
+      }
+        break;
+
+      case false: //the seats aren't to be next to each other
+        for (let i = 0; i < state.seats.length; i++) {
+          const seat = state.seats[i];
+          if (seat.reserved === false) {
+            newChosen.push(seat.id);
+          }
+          if (newChosen.length === state.questionnaireHowManySeats) {
+            dispatch(setChosenSeats(newChosen));
+            break;
+          }
+        }
+        break;
+      default:
+        console.warn("Coś poszło nie tak!");
+        break;
+    }
+  }, [
+    dispatch,
+    state.questionnaireHowManySeats,
+    state.questionnaireIsNextTo,
+    state.seats,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -85,18 +116,8 @@ const ReservationPage: FC = () => {
     return row;
   };
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    dispatch(setReservationSubmitData({
-      reservation: state.chosen,
-      isSubmitted: true
-    }));
-    history.push('/resume');
-  };
-
   return (
     <InnerWrapper>
-      <ReservationHeader>Header</ReservationHeader>
       <ReservationBoard>
         <Row seats={filterRowSeats(0)} />
         <Row seats={filterRowSeats(1)} />
@@ -109,11 +130,7 @@ const ReservationPage: FC = () => {
         <Row seats={filterRowSeats(8)} />
         <Row seats={filterRowSeats(9)} />
       </ReservationBoard>
-      <ReservationForm onSubmit={handleSubmit}>
-        <Button type="submit" variant="contained" color="secondary" >
-          Zarezerwuj
-        </Button>
-      </ReservationForm>
+      <ReservationForm />
     </InnerWrapper>
   );
 };

@@ -1,10 +1,13 @@
 import { FC, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { setReservationSubmitData } from "../../../redux/actions/appActions";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
 import SeatProps from "../../Seat/SeatProps";
 
 const InnerWrapper = styled.div`
+  position: absolute;
+  top: 60px;
   padding: 32px;
 `;
 const ReservationStatus = styled.div`
@@ -18,6 +21,15 @@ const ReservationDescriptionTitle = styled.div`
   margin-bottom: 4px;
 `;
 const ReservationItem = styled.div``;
+const ReservationMessage = styled.div`
+  margin-top: 16px;
+  font-weight: 600;
+`;
+const ReturnLink = styled(Link)`
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #ee0e59;
+`;
 
 export interface ResumePageProps {}
 
@@ -61,6 +73,10 @@ const ResumePage: FC<ResumePageProps> = () => {
           );
         })}
       </ReservationDescription>
+      <ReservationMessage>
+        Dziękujemy! W razie problemów prosimy o kontakt z działem administracji.{" "}
+        <ReturnLink to="/">Powrót</ReturnLink>
+      </ReservationMessage>
     </InnerWrapper>
   );
 };

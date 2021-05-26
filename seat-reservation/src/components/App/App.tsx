@@ -6,8 +6,10 @@ import "./App.scss";
 import QuestionnairePage from "../Pages/QuestionnairePage/QuestionnairePage";
 import ReservationPage from "../Pages/ReservationPage/ReservationPage";
 import ResumePage from "../Pages/ResumePage/ResumePage";
+import ReservationLogger from "../ReservationLogger/ReservationLogger";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
 import { setSeatsData } from "../../redux/actions/appActions";
+import { fontSize } from "../../styledHelpers/fontSize";
 
 const InnerWrapper = styled.div`
   font-family: "Source Sans Pro", sans-serif;
@@ -16,11 +18,37 @@ const InnerWrapper = styled.div`
   height: 100vh;
 `;
 
+const ReservationHeader = styled.div`
+  width: 100%;
+  height: 60px;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 1px 1px 6px -2px #000000;
+  background-color: #eee;
+  z-index: 2;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+`;
+const ReservationHeaderTitle = styled.div`
+  padding-left: 20px;
+  font-size: ${fontSize[20]};
+  color: #ee0e59;
+  text-transform: uppercase;
+  font-weight: 600;
+`;
+
 const App: FC = () => {
   const state = useAppSelector((state) => {
     const isQuestionnarySubmitted = state.app.isQuestionnaireSubmitted;
     const isReservationSubmitted = state.app.isReservationSubmitted;
-    return { isQuestionnarySubmitted, isReservationSubmitted };
+    const loggerText = state.app.logger.loggerText;
+    const logger = state.app.logger.logger;
+
+    return { isQuestionnarySubmitted, isReservationSubmitted, loggerText, logger };
   });
   const dispatch = useAppDispatch();
 
@@ -32,6 +60,13 @@ const App: FC = () => {
 
   return (
     <InnerWrapper>
+      <ReservationHeader>
+        <ReservationHeaderTitle>
+          Rezerwacja miejsc
+        </ReservationHeaderTitle>
+        <ReservationLogger loggerText = {state.loggerText} logger = {state.logger}/>
+      </ReservationHeader>
+
       <Switch>
         <Route path="/" exact>
           <QuestionnairePage />

@@ -1,4 +1,4 @@
-import { FC, useState, FormEvent, ChangeEvent} from "react";
+import { FC, useState, FormEvent, ChangeEvent } from "react";
 import styled from "styled-components";
 import { fontSize } from "../../../styledHelpers/fontSize";
 
@@ -53,17 +53,19 @@ const QuestionnairePage: FC = () => {
   };
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    dispatch(setQuestionnaireSubmitData({
-      isNextTo,
-      howManySeats,
-      isSubmitted: true
-    }));
-    history.push('/reservation');
+    dispatch(
+      setQuestionnaireSubmitData({
+        isNextTo,
+        howManySeats,
+        isSubmitted: true,
+      })
+    );
+    history.push("/reservation");
   };
 
   const handleHowManySeatsChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (+event.target.value > 10) setHowManySeats(10);
-    else if (+event.target.value < 1) setHowManySeats(1);
+    else if (+event.target.value < 0) setHowManySeats(0);
     else setHowManySeats(+event.target.value);
   };
 

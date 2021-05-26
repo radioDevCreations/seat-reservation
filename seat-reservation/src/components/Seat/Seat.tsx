@@ -12,6 +12,7 @@ import SeatProps from "./SeatProps";
 const InnerWrapper = styled.div<{ reserved: boolean; isChosen: boolean }>`
   width: 40px;
   height: 40px;
+  margin: 0 2px;
   border: 1px solid black;
   display: flex;
   justify-content: center;
@@ -27,6 +28,9 @@ const InnerWrapper = styled.div<{ reserved: boolean; isChosen: boolean }>`
   }};
   ${cannotSelect()};
   cursor: pointer;
+  :hover{
+    background-color: ${(props) => {return props.reserved || props.isChosen?"":"#e6a7bc"}};
+  }
 `;
 const Label = styled.span`
   font-size: ${fontSize[14]};
@@ -43,7 +47,7 @@ const Seat: FC<SeatProps> = ({ id, reserved }) => {
     if (!reserved) {
       if (isChosen) {
         dispatch(removeChosenSeat(id));
-      } else {
+      } else if (!isChosen && state.chosen.length < 10) {
         dispatch(addChosenSeat(id));
       }
     }
