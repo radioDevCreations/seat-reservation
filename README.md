@@ -1,5 +1,13 @@
 ## Aplikacja do zarządzania rezerwacją miejsc.
 
+### Sposób uruchomienia
+Po pobraniu repozytorium i wykonaniu komendy npm install oraz npm run api aby uruchomić projekt należy wykonać komendę
+```
+npm start
+```
+z poziomu katalogu seat-reservation.
+
+
 ### Cel zadania
 Celem zadania jest stworzenie aplikacji internetowej, wykorzystując biblioteki: React, Redux (lub inne rozwiązanie implementujące architekturę flux) oraz dowolny wybrany przez siebie istniejący design system (np. ant.design).
 W repozytorium, w katalogu mockups znajdziesz wizualizacje poszczególnych stron, które powinny zostać zaimplementowane w aplikacji.
